@@ -426,10 +426,19 @@ interjected into our execution!
 
 Rayon follows semver versioning. However, we also have APIs that are
 still in the process of development and which may break from release
-to release -- those APIs are not subject to semver. They are
-accessible with the "unstable" cargo feature. Please do give them a
-try -- but if you are using them, be aware that you (and all of your
-dependencies!) will have to stay current with Rayon.
+to release -- those APIs are not subject to semver. To use them,
+you have to set the cfg flag `rayon_unstable`. The easiest way to do this
+is to use the `RUSTFLAGS` environment variable:
+
+```
+RUSTFLAGS='--cfg rayon_unstable' cargo build
+```
+
+Note that this must not only be done for your crate, but for any crate
+that depends on your crate. This infectious nature is intentional, as
+it serves as a reminder that you are outside of the normal semver
+guarantees. **If you see unstable APIs that you would like to use,
+please open an issue about stabilizing them!**
 
 Rayon itself is internally split into two crates. The `rayon` crate is
 intended to be the main, user-facing crate, and hence all the
@@ -441,7 +450,7 @@ features). The intention is that multiple semver-incompatible versions
 of the rayon crate can peacefully coexist; they will all share one
 global thread-pool through the `rayon-core` crate.
 
-## License
+## Unstable features## License
 
 Rayon is distributed under the terms of both the MIT license and the
 Apache License (Version 2.0). See [LICENSE-APACHE](LICENSE-APACHE) and
